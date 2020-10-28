@@ -90,9 +90,9 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("TAG", "onAuthStateChanged: signed in: " + user.getEmail());
                     Toast.makeText(LoginActivity.this, "Signed in as " + user.getEmail(), Toast.LENGTH_SHORT).show();
 
-                    /*Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     startActivity(intent);
-                    finish();*/
+                    finish();
 
                 } else {
                     Toast.makeText(LoginActivity.this, "Please Check Your Email Inbox for Verification Link ", Toast.LENGTH_LONG).show();

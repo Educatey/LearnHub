@@ -1,22 +1,28 @@
 package com.educatey.learnhub.data;
 
+import com.google.firebase.database.IgnoreExtraProperties;
 
-public class User {
+@IgnoreExtraProperties
+public class Users {
     private String name;
+    private String password;
+    private String email;
     private String phone;
     private String profile_image;
     private String security_level;
     private String user_id;
 
-    public User(String name, String phone, String profile_image, String security_level, String user_id) {
+    public Users() {
+    }
+
+    public Users(String name, String password, String email, String phone, String profile_image, String security_level, String user_id) {
         this.name = name;
+        this.password = password;
+        this.email = email;
         this.phone = phone;
         this.profile_image = profile_image;
         this.security_level = security_level;
         this.user_id = user_id;
-    }
-
-    public User() {
     }
 
     public String getName() {
@@ -25,6 +31,22 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPhone() {
@@ -59,14 +81,4 @@ public class User {
         this.user_id = user_id;
     }
 
-    @Override
-    public String toString() {
-        return "Users{" +
-                "name='" + name + '\'' +
-                ", phone='" + phone + '\'' +
-                ", profile_image='" + profile_image + '\'' +
-                ", security_level='" + security_level + '\'' +
-                ", user_id='" + user_id + '\'' +
-                '}';
-    }
 }

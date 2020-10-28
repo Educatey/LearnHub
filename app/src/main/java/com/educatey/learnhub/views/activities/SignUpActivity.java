@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.educatey.learnhub.R;
+import com.educatey.learnhub.data.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -94,7 +95,7 @@ public class SignUpActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         //send email verification
                         sendVerificationEmail();
-                        com.smis.data.User user = new com.smis.data.User();
+                        User user = new User();
                         //TODO
                         user.setName(email.substring(0, email.indexOf(".")));
                         user.setPhone("+234");
