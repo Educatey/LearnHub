@@ -1,0 +1,106 @@
+package com.educatey.learnhub.views.dialogs;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
+import com.educatey.learnhub.R;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+
+public class ResendVerificationDialog extends DialogFragment {
+    private static final String TAG = "ResendVerificationDialo";
+
+    //widgets
+    private EditText mConfirmPassword, mConfirmEmail;
+
+    //vars
+    private Context mContext;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.dialog_resend_verification, container, false);
+        mConfirmPassword = view.findViewById(R.id.confirm_password);
+        mConfirmEmail = view.findViewById(R.id.confirm_email);
+        mContext = getActivity();
+
+
+        TextView confirmDialog = view.findViewById(R.id.confirm);
+        confirmDialog.setOnClickListener(v -> {
+            Log.d(TAG, "onClick: attempting to resend verification email.");
+
+            if (!isEmpty(mConfirmEmail.getText().toString())
+                    && !isEmpty(mConfirmPassword.getText().toString())) {
+
+                //temporarily authenticate and resend verification email
+                authenticateAndResendEmail(mConfirmEmail.getText().toString(),
+                        mConfirmPassword.getText().toString());
+            } else {
+                Toast.makeText(mContext, "all fields must be filled out", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Cancel button for closing the dialog
+        TextView cancelDialog = view.findViewById(R.id.cancel);
+        cancelDialog.setOnClickListener(v -> getDialog().dismiss());
+
+        return view;
+    }
+
+
+    /**
+     * reauthenticate so we can send a verification email again
+     */
+    private void authenticateAndResendEmail(String email, String password) {
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(email, password);
+        FirebaseAuth.getInstance().signInWithCredential(credential)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "onComplete: reauthenticate success.");
+                        sendVerificationEmail();
+                        FirebaseAuth.getInstance().signOut();
+                        getDialog().dismiss();
+                    }
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(mContext, "Invalid Credentials. \nReset your password and try again", Toast.LENGTH_SHORT).show();
+                    getDialog().dismiss();
+                });
+    }
+
+    /**
+     * sends an email verification link to the user
+     */
+    public void sendVerificationEmail() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            user.sendEmailVerification()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(mContext, "Sent Verification Email", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(mContext, "couldn't send email", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
+    private boolean isEmpty(String string) {
+        return string.equals("");
+    }
+}
