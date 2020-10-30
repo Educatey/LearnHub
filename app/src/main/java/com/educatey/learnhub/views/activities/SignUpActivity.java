@@ -14,8 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.educatey.learnhub.R;
 import com.educatey.learnhub.data.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
@@ -53,9 +51,14 @@ public class SignUpActivity extends AppCompatActivity {
                 if (isValidDomain(mEmail.getText().toString())) {
 
                     //checking if the provided passwords match
-                    if (doStringsMatch(mPassword.getText().toString(), mConfirmPassword.getText().toString())) {
-                        registerNewUser(mEmail.getText().toString(), mPassword.getText().toString());
-                        redirectToSignIn();
+                    if (doStringsMatch(mPassword.getText().toString(),
+                            mConfirmPassword.getText().toString())) {
+                        if (mPassword.getText().toString().length() > 7) {
+                            registerNewUser(mEmail.getText().toString(), mPassword.getText().toString());
+                            redirectToSignIn();
+                        } else {
+                            Toast.makeText(this, "Password must be at least 8 characters", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(SignUpActivity.this, "Passwords Do not Match!", Toast.LENGTH_LONG).show();
                     }
@@ -73,15 +76,12 @@ public class SignUpActivity extends AppCompatActivity {
     private void sendVerificationEmail() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(SignUpActivity.this,
-                                "Verification Email Sent, Please Check Your Mail", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(SignUpActivity.this, "Couldn't Send Verification Email", Toast.LENGTH_SHORT).show();
-                    }
+            user.sendEmailVerification().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(SignUpActivity.this,
+                            "Verification Email Sent, Please Check Your Mail", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(SignUpActivity.this, "Couldn't Send Verification Email", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -110,13 +110,13 @@ public class SignUpActivity extends AppCompatActivity {
                                 .child(getString(R.string.dbnode_users))
                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                 .setValue(user).addOnCompleteListener(task1 -> {
-                                    FirebaseAuth.getInstance().signOut();
-                                    redirectToSignIn();
-                                }).addOnFailureListener(e -> {
-                                    FirebaseAuth.getInstance().signOut();
-                                    redirectToSignIn();
-                                    Toast.makeText(SignUpActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
-                                });
+                            FirebaseAuth.getInstance().signOut();
+                            redirectToSignIn();
+                        }).addOnFailureListener(e -> {
+                            FirebaseAuth.getInstance().signOut();
+                            redirectToSignIn();
+                            Toast.makeText(SignUpActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                        });
                     } else {
                         Toast.makeText(SignUpActivity.this, "Unable to Register, Something Went Wrong", Toast.LENGTH_LONG).show();
                     }

@@ -19,10 +19,6 @@ import com.educatey.learnhub.R;
 import com.educatey.learnhub.adapters.FilesAdapter;
 import com.educatey.learnhub.data.Files;
 import com.educatey.learnhub.data.User;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCanceledListener;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -34,7 +30,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -151,63 +146,39 @@ public class ClassroomActivity extends AppCompatActivity {
 
         final UploadTask uploadTask = ref.putFile(mSelectedFileUrl);
 
-        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
-                        .getTotalByteCount());
-                Snackbar.make(findViewById(R.id.relativeLayout),
-                        "Uploaded " + (int) progress + "%", Snackbar.LENGTH_SHORT)
-                        .setAction("Cancel", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                uploadTask.cancel();
-                            }
-                        }).show();
-            }
-        }).addOnCanceledListener(new OnCanceledListener() {
-            @Override
-            public void onCanceled() {
-                Toast.makeText(ClassroomActivity.this, "Upload cancelled", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ClassroomActivity.this, "Upload failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+        uploadTask.addOnProgressListener(taskSnapshot -> {
+            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+                    .getTotalByteCount());
+            Snackbar.make(findViewById(R.id.relativeLayout),
+                    "Uploaded " + (int) progress + "%", Snackbar.LENGTH_SHORT)
+                    .setAction("Cancel", v -> uploadTask.cancel()).show();
+        }).addOnCanceledListener(() -> Toast.makeText(ClassroomActivity.this, "Upload cancelled", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(ClassroomActivity.this, "Upload failed", Toast.LENGTH_SHORT).show());
 
         //generating a random string
         Random r = new java.util.Random();
         final String s = Long.toString(r.nextLong() & Long.MAX_VALUE, 36);
 
-        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    throw Objects.requireNonNull(task.getException());
-                }
-                // Continue with the task to get the download URL
-                return ref.getDownloadUrl();
+        Task<Uri> urlTask = uploadTask.continueWithTask(task -> {
+            if (!task.isSuccessful()) {
+                throw Objects.requireNonNull(task.getException());
             }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()) {
-                    Uri downloadUri = task.getResult();
-                    //saving file details to the RTDB
-                    Files file = new Files();
-                    file.setFileName(fileName);
-                    file.setUserName(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail());
-                    assert downloadUri != null;
-                    file.setFileUrl(downloadUri.toString());
-                    file.setFilePath(" ");
-                    file.setDate("");
-                    mDatabaseReference.child("files").child(s).setValue(file);
-                } else {
-                    Toast.makeText(ClassroomActivity.this,
-                            "File upload did not complete successfully, please, re-upload", Toast.LENGTH_SHORT).show();
-                }
+            // Continue with the task to get the download URL
+            return ref.getDownloadUrl();
+        }).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Uri downloadUri = task.getResult();
+                //saving file details to the RTDB
+                Files file = new Files();
+                file.setFileName(fileName);
+                file.setUserName(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail());
+                assert downloadUri != null;
+                file.setFileUrl(downloadUri.toString());
+                file.setFilePath(" ");
+                file.setDate("");
+                mDatabaseReference.child("files").child(s).setValue(file);
+            } else {
+                Toast.makeText(ClassroomActivity.this,
+                        "File upload did not complete successfully, please, re-upload", Toast.LENGTH_SHORT).show();
             }
         });
     }

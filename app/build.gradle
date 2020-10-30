@@ -49,6 +49,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-storage'
 
+    //firebase database ui
+    implementation 'com.firebaseui:firebase-ui-database:1.2.0'
+    //firebase firestore
+    implementation 'com.firebaseui:firebase-ui-firestore:4.0.0'
+    implementation 'com.google.firebase:firebase-firestore'
+
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
     //permission

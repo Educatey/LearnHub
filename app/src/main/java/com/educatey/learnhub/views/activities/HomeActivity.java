@@ -11,7 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.educatey.learnhub.R;
+import com.educatey.learnhub.data.Common;
 import com.educatey.learnhub.data.User;
+import com.educatey.learnhub.data.Users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -52,20 +54,20 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         }));
 
-//        mQuiz.setOnClickListener((v -> users.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                Users user1 = dataSnapshot.child(userId).getValue(Users.class);
-//                Intent intent = new Intent(HomeActivity.this, QuizActivity.class);
-//                //TODO
-//                Common.currentUsers = user1;
-//                startActivity(intent);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//            }
-//        })));
+        mQuiz.setOnClickListener((v -> users.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Users user1 = dataSnapshot.child(userId).getValue(Users.class);
+                Intent intent = new Intent(HomeActivity.this, QuizActivity.class);
+                //TODO
+                Common.currentUsers = user1;
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        })));
 
         mChat.setOnClickListener((v -> {
             Intent intent = new Intent(HomeActivity.this, ChatActivity.class);
@@ -82,8 +84,8 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.settings) {
-//            startActivity(new Intent(this, SettingsActivity.class));
-//            return true;
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
         } else if (itemId == R.id.sign_out) {
             FirebaseAuth.getInstance().signOut();
             return true;

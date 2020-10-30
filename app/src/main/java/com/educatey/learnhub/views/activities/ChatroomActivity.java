@@ -80,7 +80,7 @@ public class ChatroomActivity extends AppCompatActivity {
         mListView = findViewById(R.id.listView);
         mMessage = findViewById(R.id.input_message);
         mCheckmark = findViewById(R.id.checkmark);
-        //getSupportActionBar().hide();
+        getSupportActionBar().hide();
 
         initImageLoader();
         setupFirebaseAuth();
@@ -88,10 +88,12 @@ public class ChatroomActivity extends AppCompatActivity {
         init();
         hideSoftKeyboard();
     }
-        private void initImageLoader() {
+
+    private void initImageLoader() {
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getBaseContext()));
     }
+
     private void init() {
 
         mMessage.setOnClickListener(view -> {

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".views.activities.SettingsActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="32dp"
+        android:paddingTop="32dp"
+        android:paddingLeft="32dp"
+        android:text="@string/account_settings"
+        android:textAlignment="center"
+        android:textColor="@color/White"
+        android:textSize="18sp" />
+    <ProgressBar
+        android:padding="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_gravity="center"
+        android:visibility="invisible"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="match_parent"
+        android:id="@+id/profile_image"
+        android:layout_height="150dp"
+        android:paddingBottom="16dp" />
+
+    <EditText
+        android:id="@+id/settings_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:focusable="true"
+        android:hint="@string/first_and_last_name"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:paddingBottom="16dp"
+        android:singleLine="true"
+        android:textColor="@color/White"
+        android:textColorHint="@color/Grey"
+        android:theme="@style/MyEditTextTheme" />
+
+    <EditText
+        android:id="@+id/settings_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:focusable="true"
+        android:hint="@string/phone_number"
+        android:importantForAutofill="no"
+        android:inputType="phone"
+        android:paddingBottom="16dp"
+        android:singleLine="true"
+        android:textColor="@color/White"
+        android:textColorHint="@color/Grey"
+        android:theme="@style/MyEditTextTheme" />
+
+    <EditText
+        android:id="@+id/settings_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="@string/email"
+        android:importantForAutofill="no"
+        android:inputType="textEmailAddress"
+        android:paddingBottom="16dp"
+        android:singleLine="true"
+        android:textColor="@color/White"
+        android:textColorHint="@color/Grey"
+        android:theme="@style/MyEditTextTheme" />
+
+    <EditText
+        android:id="@+id/settings_confirm_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:focusable="true"
+        android:hint="@string/confirm_password"
+        android:importantForAutofill="no"
+        android:inputType="textPassword"
+        android:paddingBottom="16dp"
+        android:singleLine="true"
+        android:textColor="@color/White"
+        android:textColorHint="@color/Grey"
+        android:theme="@style/MyEditTextTheme" />
+
+    <Button
+        android:id="@+id/settings_save_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/White"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/save"
+        android:textAllCaps="true"
+        android:textColor="@color/colorPrimary" />
+
+</LinearLayout>

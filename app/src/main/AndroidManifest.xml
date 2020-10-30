@@ -19,7 +19,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LearnHub">
-        <activity android:name=".views.activities.ChatActivity"></activity>
+        <activity android:name=".views.activities.SettingsActivity"></activity>
+        <activity android:name=".views.activities.AddQuizActivity" />
+        <activity android:name=".views.activities.DoneActivity" />
+        <activity android:name=".views.activities.QuizActivity" />
+        <activity android:name=".views.activities.ScoreDetailActivity" />
+        <activity android:name=".views.activities.PlayingActivity" />
+        <activity android:name=".views.activities.StartActivity" />
+        <activity android:name=".views.activities.ChatActivity" />
         <activity android:name=".views.activities.ChatroomActivity" />
         <activity android:name=".views.activities.DownloadActivity" />
         <activity android:name=".views.activities.ClassroomActivity" />

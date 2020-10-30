@@ -64,7 +64,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/colorPrimary"
+            android:background="#FF6200EE"
             android:elevation="10dp">
 
             <TextView

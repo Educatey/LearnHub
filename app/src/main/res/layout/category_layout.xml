@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="5dp"
+    android:layout_margin="@dimen/fab_margin"
+    app:cardCornerRadius="8dp"
+    android:layout_height="wrap_content">
+
+
+
+    <TextView
+        android:id="@+id/category_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name of Quiz"
+        android:padding="@dimen/standard"
+        android:layout_margin="5dp"
+        android:textColor="#000"
+        android:textSize="24sp" />
+
+</androidx.cardview.widget.CardView>
