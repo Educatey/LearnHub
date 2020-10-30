@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relLayout1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_chatroom_name"
+            android:textSize="16sp"
+            android:textColor="@color/Black"
+            android:id="@+id/textChatroomName"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_below="@+id/textChatroomName"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:id="@+id/input_quiz_name"/>
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/relLayout2"
+        android:layout_below="@+id/relLayout1"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/security_level"
+            android:textSize="15sp"
+            android:textColor="@color/Black"
+            android:id="@+id/textSecurityLevel"
+            android:gravity="center_vertical"/>
+
+        <SeekBar
+            android:id="@+id/input_security_level"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textSecurityLevel"
+            android:layout_marginTop="10dp"
+            android:thumbTint="@color/colorPrimaryDark"
+            android:progressTint="@color/colorPrimary"
+            android:max="2"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/input_security_level"
+            android:layout_centerHorizontal="true"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/Black"
+            android:id="@+id/security_level"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="@string/create"
+        android:textAllCaps="true"
+        android:padding="4dp"
+        android:layout_below="@+id/relLayout2"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:textColor="@color/colorPrimary"
+        android:id="@+id/create_quiz"/>
+
+</RelativeLayout>

@@ -47,10 +47,10 @@ public class HomeActivity extends AppCompatActivity {
         User user = new User();
         user.setSecurity_level(mSecL);
 
-//        mClassroom.setOnClickListener((v -> {
-//            Intent intent = new Intent(HomeActivity.this, ClassroomActivity.class);
-//            startActivity(intent);
-//        }));
+        mClassroom.setOnClickListener((v -> {
+            Intent intent = new Intent(HomeActivity.this, ClassroomActivity.class);
+            startActivity(intent);
+        }));
 
 //        mQuiz.setOnClickListener((v -> users.addListenerForSingleValueEvent(new ValueEventListener() {
 //            @Override
@@ -67,10 +67,10 @@ public class HomeActivity extends AppCompatActivity {
 //            }
 //        })));
 
-//        mChat.setOnClickListener((v -> {
-//            Intent intent = new Intent(HomeActivity.this, ChatActivity.class);
-//            startActivity(intent);
-//        }));
+        mChat.setOnClickListener((v -> {
+            Intent intent = new Intent(HomeActivity.this, ChatActivity.class);
+            startActivity(intent);
+        }));
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

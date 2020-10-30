@@ -96,4 +96,5 @@
     <string name="classroom">Classroom</string>
     <string name="quiz">Quiz</string>
     <string name="chat">Chat</string>
+    <string name="upload_file_button">upload file button</string>
 </resources>

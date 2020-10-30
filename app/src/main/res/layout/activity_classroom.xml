@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/relativeLayout"
+    tools:context=".views.activities.ClassroomActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_row"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!--TODO visibility and secLevel-->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/select_file_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        tools:visibility="visible"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="14dp"
+        android:backgroundTint="@color/colorPrimary"
+        app:rippleColor="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_cloud_upload_white_24dp"
+        android:contentDescription="@string/upload_file_button" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/upload_progressBar"
+        android:indeterminateTint="@color/colorPrimaryDark"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:visibility="invisible"/>
+
+</RelativeLayout>
