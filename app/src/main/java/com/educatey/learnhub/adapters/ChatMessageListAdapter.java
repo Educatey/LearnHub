@@ -69,6 +69,10 @@ public class ChatMessageListAdapter extends ArrayAdapter<ChatMessage> {
                 //we only load image if prev. URL and current URL do not match, or tag is null
                 ImageLoader.getInstance().displayImage(getItem(position).getProfile_image(), holder.mProfileImage,
                         new SimpleImageLoadingListener());
+//                Picasso.get().load(getItem(position).getProfile_image())
+//                        .placeholder(R.drawable.ic_launcher_foreground)
+//                        .error(R.drawable.ic_launcher_foreground)
+//                        .into(holder.mProfileImage);
                 holder.mProfileImage.setTag(getItem(position).getProfile_image());
             }
         } catch (NullPointerException e) {

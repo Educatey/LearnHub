@@ -1,6 +1,7 @@
 package com.educatey.learnhub.views.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -25,12 +26,13 @@ import com.google.firebase.database.ValueEventListener;
 
 
 public class HomeActivity extends AppCompatActivity {
+    private final String TAG = "HomeActivity";
     Button mClassroom, mQuiz, mChat, mSettings, mSignOut;
     String userId, UserName;
     private String mSecL;
-    private final String TAG = "HomeActivity";
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase, reference, users;
+    private SharedPreferences sharedPreferences;
     //DatabaseReference users;
 
     @Override
@@ -42,6 +44,7 @@ public class HomeActivity extends AppCompatActivity {
         mQuiz = findViewById(R.id.quizBtn);
         mChat = findViewById(R.id.chatBtn);
 
+        sharedPreferences = getSharedPreferences("loginToHome", MODE_PRIVATE);
         getUserSecurityLevel();
         getUserDetails();
         setupFirebaseAuth();
@@ -74,6 +77,7 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         }));
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -87,11 +91,13 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         } else if (itemId == R.id.sign_out) {
+            sharedPreferences.edit().putBoolean("userVerified", false).apply();
             FirebaseAuth.getInstance().signOut();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -119,7 +125,7 @@ public class HomeActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             Log.d("TAG", "checkAuthState: user is null, redirecting to Login Activity");
-            Intent intent = new Intent( HomeActivity.this, LoginActivity.class);
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
@@ -160,7 +166,8 @@ public class HomeActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {}
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
             });
         } catch (Exception e) {
             //Toast.makeText(HomeActivity.this, "Error occured" + e.toString(), Toast.LENGTH_LONG).show();

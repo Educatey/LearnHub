@@ -80,6 +80,7 @@ public class ChatroomActivity extends AppCompatActivity {
         mListView = findViewById(R.id.listView);
         mMessage = findViewById(R.id.input_message);
         mCheckmark = findViewById(R.id.checkmark);
+
         getSupportActionBar().hide();
 
         initImageLoader();

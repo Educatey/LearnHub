@@ -39,6 +39,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -54,14 +55,13 @@ public class SettingsActivity extends AppCompatActivity implements ChangePhotoDi
     private static final double MB = 1000000.0;
     private static final int REQUEST_CODE = 1234;
     public static boolean isActivityRunning;
-    public String lecturerProfilePic = "https://firebasestorage.googleapis.com/v0/b/smis-1234.appspot.com/o/profile_pics%2Flecturer.png?alt=media&token=8ef5d5d1-9b77-4378-bc89-ee8f00cd9639";
-    public String studentProfilePic = "https://firebasestorage.googleapis.com/v0/b/smis-1234.appspot.com/o/profile_pics%2Fstudents.jpg?alt=media&token=a6ac3b2a-995f-460b-8afe-cec8d2a7a203";
+
     //widgets
     EditText mNames, mPhone, mEmail, mPassword;
     Button mSave;
     ImageView mProfile_image;
     ProgressBar mProgressBar;
-    Uri uriNew;
+
     private FirebaseAuth.AuthStateListener mAuthListener;
     private byte[] mBytes;
     private double progress;
@@ -107,10 +107,9 @@ public class SettingsActivity extends AppCompatActivity implements ChangePhotoDi
         mPassword = findViewById(R.id.settings_confirm_password);
         mSave = findViewById(R.id.settings_save_btn);
         mProfile_image = findViewById(R.id.profile_image);
-        mProgressBar = findViewById(R.id.progressBar);
+        mProgressBar = findViewById(R.id.settingProgressBar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        initImageLoader();
         verifyStoragePermissions();
         setupFirebaseAuth();
         init();
@@ -186,8 +185,7 @@ public class SettingsActivity extends AppCompatActivity implements ChangePhotoDi
     }
 
     private void executeUploadTask() {
-        //showDialog();
-        //FilePaths filePaths = new FilePaths();
+        showDialog();
         //specify where the photo will be stored
         final StorageReference storageReference = FirebaseStorage.getInstance().getReference()
                 .child("images/users" + FirebaseAuth.getInstance().getCurrentUser().getUid()
@@ -331,6 +329,7 @@ public class SettingsActivity extends AppCompatActivity implements ChangePhotoDi
     Section3
      */
     private void getUserAccountData() {
+        showDialog();
         Log.d("TAG", "getUserAccountData: getting the user's account information");
 
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -343,7 +342,7 @@ public class SettingsActivity extends AppCompatActivity implements ChangePhotoDi
                 .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         query1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 //this loop will return a single result
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
@@ -353,27 +352,19 @@ public class SettingsActivity extends AppCompatActivity implements ChangePhotoDi
                     mNames.setText(user.getName());
                     mPhone.setText(user.getPhone());
                     profile_image_url = user.getProfile_image();
-
-                    ImageLoader.getInstance().displayImage(profile_image_url, mProfile_image);
-//                    try {
-//                        if (user.getSecurity_level().equals("2")) {
-//                        } else {
-//                            ImageLoader.getInstance().displayImage(studentProfilePic, mProfile_image);
-//                        }
-//                    } catch (Exception e) {
-//                        ImageLoader.getInstance().displayImage(uriNew.toString(), mProfile_image);
-//                    }
+                    Picasso.get().load(profile_image_url).placeholder(R.drawable.ic_launcher_foreground).into(mProfile_image);
+                    hideDialog();
                     Log.d("profile", "Users data: " + user.getSecurity_level());
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                hideDialog();
             }
         });
 
         mEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-
     }
 
     /**
@@ -402,12 +393,11 @@ public class SettingsActivity extends AppCompatActivity implements ChangePhotoDi
 
     private void showDialog() {
         mProgressBar.setVisibility(View.VISIBLE);
-
     }
 
     private void hideDialog() {
         if (mProgressBar.getVisibility() == View.VISIBLE) {
-            mProgressBar.setVisibility(View.INVISIBLE);
+            mProgressBar.setVisibility(View.GONE);
         }
     }
 

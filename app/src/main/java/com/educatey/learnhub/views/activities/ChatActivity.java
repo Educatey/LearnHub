@@ -3,7 +3,9 @@ package com.educatey.learnhub.views.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,14 +47,16 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mChatroomReference, mDatabase;
     private HashMap<String, String> mNumChatroomMessages;
-
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         mListView = findViewById(R.id.listView);
+        mProgressBar = findViewById(R.id.chatProgressBar);
         mFob = findViewById(R.id.fob);
+
         init();
         getUserDetails();
         setupFirebaseAuth();
@@ -60,6 +64,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void init() {
+        showProgressBar();
         mChatrooms = new ArrayList<>();
         getUserSecurityLevel();
         getChatrooms();
@@ -242,6 +247,7 @@ public class ChatActivity extends AppCompatActivity {
         Log.d(TAG, "setupChatroomList: setting up chatroom listview");
         mAdapter = new ChatroomListAdapter(ChatActivity.this, R.layout.layout_chatroom_listitem, mChatrooms);
         mListView.setAdapter(mAdapter);
+        hideProgressBar();
     }
 
     private void getUserDetails() {
@@ -293,4 +299,13 @@ public class ChatActivity extends AppCompatActivity {
         };
     }
 
+    public void showProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgressBar() {
+        if (mProgressBar.getVisibility() == View.VISIBLE) {
+            mProgressBar.setVisibility(View.INVISIBLE);
+        }
+    }
 }

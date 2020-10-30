@@ -1,71 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/toolbar"
-            android:layout_marginBottom="50dp">
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:background="@null"
+            android:divider="@null"
+            android:stackFromBottom="true"
+            android:transcriptMode="normal"
+            app:layout_constraintBottom_toTopOf="@+id/input_message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-            <ListView
-                android:id="@+id/listView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:background="@null"
-                android:divider="@null"
-                android:stackFromBottom="true"
-                android:transcriptMode="normal">
+        </ListView>
 
-            </ListView>
+        <EditText
+            android:id="@+id/input_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_toStartOf="@+id/checkmark"
+            android:background="@drawable/edittext_grey_border"
+            android:gravity="center_vertical"
+            android:hint="@string/hint_chatroom"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:padding="16dp"
+            android:textColor="#ffffff"
+            android:textColorHint="#aaffffff"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/checkmark"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/checkmark"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/send_button"
+            android:src="@drawable/ic_send_blue_24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/input_message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/input_message" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_margin="8dp"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/grey_border">
-
-            <EditText
-                android:id="@+id/input_message"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:layout_toStartOf="@+id/checkmark"
-                android:gravity="center_vertical"
-                android:hint="@string/hint_chatroom"
-                android:inputType="textMultiLine"
-                android:textColor="#000000"
-                android:textSize="14sp"
-                android:importantForAutofill="no" />
-
-            <ImageView
-                android:contentDescription="@string/send_button"
-                android:id="@+id/checkmark"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="4dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_send_blue_24dp" />
-
-
-        </RelativeLayout>
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="#FF6200EE"
-            android:elevation="10dp">
+            android:elevation="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/text_chatroom_name"
@@ -77,6 +80,6 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

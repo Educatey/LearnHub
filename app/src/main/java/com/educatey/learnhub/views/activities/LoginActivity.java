@@ -1,6 +1,7 @@
 package com.educatey.learnhub.views.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ProgressBar mProgressBar;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        sharedPreferences = getSharedPreferences("loginToHome", MODE_PRIVATE);
+        boolean verifiedUser = sharedPreferences.getBoolean("userVerified", false);
+
+        if (verifiedUser){
+            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+        }
 
         firebaseAuthSetUp();
 
@@ -56,9 +64,13 @@ public class LoginActivity extends AppCompatActivity {
             if (!isEmpty(mEmailSignIn.getText().toString()) && !isEmpty(mPasswordSignIn.getText().toString())) {
                 showProgressBar();
                 hideSoftKeyboard();
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(mEmailSignIn.getText().toString(),
-                        mPasswordSignIn.getText().toString())
-                        .addOnCompleteListener(task -> hideProgressBar())
+                FirebaseAuth.getInstance()
+                        .signInWithEmailAndPassword(
+                                mEmailSignIn.getText().toString(),
+                                mPasswordSignIn.getText().toString()
+                        )
+                        .addOnCompleteListener(task ->
+                                hideProgressBar())
                         .addOnFailureListener(e -> {
                             Toast.makeText(LoginActivity.this,
                                     " Authentication Failed!!!", Toast.LENGTH_LONG).show();
@@ -92,7 +104,9 @@ public class LoginActivity extends AppCompatActivity {
                      */
                     Log.d("TAG", "onAuthStateChanged: signed in: " + user.getEmail());
                     Toast.makeText(LoginActivity.this, "Signed in as " + user.getEmail(), Toast.LENGTH_SHORT).show();
-
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("userVerified", true);
+                    editor.apply();
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     startActivity(intent);
                     finish();
